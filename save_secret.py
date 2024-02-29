@@ -12,41 +12,6 @@ from userbot import client
 
 info = {'category': 'tools', 'pattern': "", 'description': ''}
 
-class CustomMarkdown:
-    @staticmethod
-    def parse(text):
-        """
-        A static method to parse the given text and return the parsed text with entities.
-        :param text: The text to be parsed.
-        :return: The parsed text and entities.
-        """
-        text, entities = markdown.parse(text)
-        for i, e in enumerate(entities):
-            if isinstance(e, types.MessageEntityTextUrl):
-                if e.url == 'spoiler':
-                    entities[i] = types.MessageEntitySpoiler(e.offset, e.length)
-                elif e.url.startswith('emoji/'):
-                    entities[i] = types.MessageEntityCustomEmoji(e.offset, e.length, int(e.url.split('/')[1]))
-        return text, entities
-    @staticmethod
-    def unparse(text, entities):
-        """
-        Returns the unparsed text with updated entities. 
-
-        Args:
-            text: The input text to be unparsed.
-            entities: List of entities to be updated.
-
-        Returns:
-            The unparsed text with updated entities.
-        """
-        for i, e in enumerate(entities or []):
-            if isinstance(e, types.MessageEntityCustomEmoji):
-                entities[i] = types.MessageEntityTextUrl(e.offset, e.length, f'emoji/{e.document_id}')
-            if isinstance(e, types.MessageEntitySpoiler):
-                entities[i] = types.MessageEntityTextUrl(e.offset, e.length, 'spoiler')
-        return markdown.unparse(text, entities)
-
 @client.on(events.NewMessage(incoming=True))
 async def save_secret(event):
     message = event.message
@@ -64,11 +29,10 @@ async def save_secret(event):
         if isinstance(message.peer_id, PeerUser) and not message.out and message.media.ttl_seconds is not None:
             sender = await event.get_sender()
             text = (
-                f"[🤫](emoji/5345809986465309859)**Новое секретное сообщение**\n"
-                f"**От** {sender.first_name} -"
-                f" [{sender.id}](tg://user?id={sender.id}) \n\n"
-                f"[Посмотреть сообщение](tg://openmessage?user_id={str(event.chat_id)}"
-                f"&message_id={message.id})\n"
+                f"<emoji document_id=5345809986465309859>🤫</emoji><b>Новое секретное сообщение</b>\n"
+                f"<b>От</b> {sender.first_name} - "
+                f'<a href="tg://user?id={sender.id}">{sender.id}</a>\n\n'
+                f'<a href="tg://openmessage?user_id={str(event.chat_id)}&message_id={message.id}">Посмотреть сообщение</a>'
             )
 
             # Download media into bytes
