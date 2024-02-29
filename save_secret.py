@@ -29,7 +29,7 @@ async def save_secret(event):
         if isinstance(message.peer_id, PeerUser) and not message.out and message.media.ttl_seconds is not None:
             sender = await event.get_sender()
             text = (
-                f"<emoji document_id=5345809986465309859>🤫</emoji><b>Новое секретное сообщение</b>\n"
+                f"<emoji id=5345809986465309859>🤫</emoji><b>Новое секретное сообщение</b>\n"
                 f"<b>От</b> {sender.first_name} - "
                 f'<a href="tg://user?id={sender.id}">{sender.id}</a>\n\n'
                 f'<a href="tg://openmessage?user_id={str(event.chat_id)}&message_id={message.id}">Посмотреть сообщение</a>'
