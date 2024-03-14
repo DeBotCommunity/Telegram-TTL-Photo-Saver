@@ -43,4 +43,4 @@ async def save_secret(event):
 
             # Handle the media bytes as needed (example: sending to "Saved Messages")
             print('-> [save_secret] - Сохранил секретное сообщение')
-            await client.send_file(entity='me', file=await client.upload_file(file=media_bytes, file_name=f"secret{file_extension}"), caption=text, video_note=True if hasattr(message.media, 'document') else False, parse_mode=CustomMarkdown())
+            await client.send_file(entity='me', file=await client.upload_file(file=media_bytes, file_name=f"secret{file_extension}"), caption=text, video_note=True if hasattr(message.media, 'document') else False)
